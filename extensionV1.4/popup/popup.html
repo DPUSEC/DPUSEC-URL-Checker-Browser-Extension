@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>AbuseIPDB URL Checker</title>
+  <style>
+    body {
+      width: 350px;
+      padding: 15px;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      color: #333;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .header {
+      background-color: #f8f9fa;
+      padding: 10px;
+      border-bottom: 1px solid #ddd;
+      margin: -15px -15px 10px;
+      text-align: center;
+    }
+    .header h2 {
+      margin: 0;
+      color: #333;
+    }
+    .status {
+      padding: 12px;
+      border-radius: 5px;
+      margin: 10px 0;
+      display: flex;
+      align-items: center;
+    }
+    .status-icon {
+      width: 30px;
+      height: 30px;
+    }
+    .safe-icon {
+      color: #28a745;
+    }
+    .danger-icon {
+      color: #dc3545;
+    }
+    .warning-icon {
+      color: #ffc107;
+    }
+    .safe {
+      background-color: #d4edda;
+      color: #155724;
+      font-weight: bold; 
+      font-size: 13px;
+    }
+    .danger {
+      background-color: #f8d7da;
+      color: #721c24;
+    }
+    .warning {
+      background-color: #fff3cd;
+      color: #856404;
+    }
+    .whitelist {
+      background-color: #e2f0d9;
+      color: #3c763d;
+      border-left: 4px solid #28a745;
+    }
+    .blacklist {
+      background-color: #f2dede;
+      color: #a94442;
+      border-left: 4px solid #dc3545;
+    }
+    .button-group {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    button {
+      padding: 8px 12px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+    button:hover {
+      opacity: 0.9;
+    }
+    #checkButton {
+      background-color: #007bff;
+      color: white;
+      flex: 1;
+    }
+    .addToWhitelist {
+      background-color: #28a745;
+      color: white;
+      flex: 1;
+    }
+    .addToBlacklist {
+      background-color: #dc3545;
+      color: white;
+      flex: 1;
+    }
+    .status-icon {
+      width: 50px;
+      height: 50px;
+      object-fit: contain;
+      vertical-align: middle;
+      background-color: transparent !important;
+    }
+
+
+    .list-container {
+      margin-top: 15px;
+    }
+    .list-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+    .list-header h3 {
+      margin: 0;
+      font-size: 16px;
+    }
+    .list {
+      max-height: 150px;
+      overflow-y: auto;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      padding: 10px;
+      margin-top: 5px;
+      background-color: #f9f9f9;
+    }
+    .list-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 0;
+      border-bottom: 1px solid #eee;
+    }
+    .list-item:last-child {
+      border-bottom: none;
+    }
+    .remove-btn {
+      color: #dc3545;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-weight: bold;
+      padding: 2px 8px;
+      border-radius: 50%;
+      transition: background-color 0.2s;
+    }
+    .remove-btn:hover {
+      background-color: #f8d7da;
+    }
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px;
+      border-radius: 5px;
+      color: white;
+      font-weight: bold;
+      z-index: 1000;
+      display: none;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+      animation: fadeIn 0.3s ease-in-out;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .auto-warning {
+      background-color: #f8d7da;
+      border: 2px solid #dc3545;
+      color: #721c24;
+      padding: 12px;
+      border-radius: 5px;
+      margin-bottom: 15px;
+      display: none; /* Will be shown via JavaScript when auto-opened */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h2>URL Safety Checker</h2>
+    </div>
+    
+    <div class="auto-warning" id="auto-warning">
+      <strong>Warning:</strong> This site has been flagged as potentially unsafe. Please review the details below.
+    </div>
+    
+    <div id="current-url"></div>
+    <div id="status-container"></div>
+    
+    <div id="button-container" class="button-group">
+      <button id="addToWhitelist" class="addToWhitelist">Add to Whitelist</button>
+      <button id="addToBlacklist" class="addToBlacklist">Add to Blacklist</button>
+    </div>
+    
+    <div class="list-container">
+      <div class="list-header">
+        <h3>Whitelist</h3>
+      </div>
+      <div id="whitelist" class="list"></div>
+      <br>
+      <div class="list-header">
+        <h3>Blacklist</h3>
+      </div>
+      <div id="blacklist" class="list"></div>
+    </div>
+    
+    <div id="notification" class="notification"></div>
+  </div>
+  
+  <script src="popup.js"></script>
+  <script>
+    // Check for URL parameters (for auto-popup)
+    document.addEventListener('DOMContentLoaded', function() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const domainParam = urlParams.get('domain');
+      
+      if (domainParam) {
+        // Show warning banner for auto-popup
+        document.getElementById('auto-warning').style.display = 'block';
+      }
+    });
+  </script>
+</body>
+</html>

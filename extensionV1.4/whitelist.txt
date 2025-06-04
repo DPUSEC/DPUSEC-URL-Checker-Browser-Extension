@@ -1,0 +1,10 @@
+# Domains
+google.com
+microsoft.com
+github.com
+youtube.com
+example.com
+
+# IPs
+8.8.8.8
+8.8.4.4

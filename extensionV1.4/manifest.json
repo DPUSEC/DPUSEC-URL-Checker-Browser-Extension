@@ -1,0 +1,47 @@
+{
+  "manifest_version": 3,
+  "name": "URL Blacklist Checker",
+  "version": "1.0",
+  "description": "Checks URLs against a local blacklist and AbuseIPDB API",
+  "permissions": [
+    "tabs",
+    "storage",
+    "webNavigation",
+    "webRequest",
+    "webRequestBlocking",
+    "storage",
+    "notifications"
+  ],
+  "host_permissions": [
+    "https://api.abuseipdb.com/api/v2/*",
+    "https://dns.google/*",
+    "http://*/*",
+    "https://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  },
+    "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
+  "minimum_chrome_version": "88",
+  "web_accessible_resources": [
+    {
+      "resources": ["blocked.html","redirect.js"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}

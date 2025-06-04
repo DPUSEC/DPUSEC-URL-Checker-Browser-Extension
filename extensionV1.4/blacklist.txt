@@ -1,0 +1,27 @@
+# Domains
+malware.wicar.org
+www.malwaredomainlist.com
+rogue.bank.com
+phishing-site.example.com
+malicious.example.org
+evil.example.net
+ransomware.test
+malware-download.example
+fakebank.com
+phishingsite.xyz
+malware-distribution.com
+fake-antivirus.org
+trojan.example.com
+badware.example.net
+virus.example.org
+spyware.example
+adware.example.com
+maliciousscript.example
+exploitkit.example.net
+drive-by-download.example
+
+
+# IPs
+192.0.2.1
+203.0.113.2
+198.51.100.3
