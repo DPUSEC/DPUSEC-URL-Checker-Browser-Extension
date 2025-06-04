@@ -27,9 +27,7 @@ URL Checker automatically detects and analyzes domains and IP addresses to provi
 
 This extension is perfect for cybersecurity professionals, IT teams, security researchers, and anyone concerned about online safety. It provides an additional layer of protection against phishing, malware, and other malicious websites.
 
-🚀
-
-👨‍💻 Developer Team
+🚀 Developer Team
 This project was developed by DPUSEC Development Team:
 
 👨‍💻 [Baris Azar](https://www.linkedin.com/in/barisazar/?lipi=urn%3Ali%3Apage%3Ad_flagship3_detail_base%3BE01UFRvyST2TpowFyvwYyw%3D%3D)
